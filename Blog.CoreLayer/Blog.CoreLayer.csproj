@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DataAccess\Abstract\" />
+    <Folder Include="DataAccess\Concrete\EntityFramework\" />
+    <Folder Include="Entities\Concrete\" />
+    <Folder Include="Utilities\Extension\" />
+    <Folder Include="Utilities\Helpers\Abstract\" />
+    <Folder Include="Utilities\Helpers\Concrete\" />
+    <Folder Include="Utilities\Results\Abstract\" />
+    <Folder Include="Utilities\Results\Concrete\" />
+    <Folder Include="Utilities\Results\ComplexTypes\" />
+  </ItemGroup>
+
+</Project>
