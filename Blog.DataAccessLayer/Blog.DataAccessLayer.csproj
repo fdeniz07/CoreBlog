@@ -8,7 +8,6 @@
     <Folder Include="Abstract\UnitOfWorks\" />
     <Folder Include="Abstract\Repositories\" />
     <Folder Include="Concrete\EntityFramework\Repositories\" />
-    <Folder Include="Concrete\Maps\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +21,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.CoreLayer\Blog.CoreLayer.csproj" />
+    <ProjectReference Include="..\Blog.EntityLayer\Blog.EntityLayer.csproj" />
   </ItemGroup>
 
 </Project>

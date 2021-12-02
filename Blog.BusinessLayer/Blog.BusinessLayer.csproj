@@ -12,4 +12,10 @@
     <Folder Include="ValidationRules\FluentValidation\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.CoreLayer\Blog.CoreLayer.csproj" />
+    <ProjectReference Include="..\Blog.DataAccessLayer\Blog.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\Blog.EntityLayer\Blog.EntityLayer.csproj" />
+  </ItemGroup>
+
 </Project>
