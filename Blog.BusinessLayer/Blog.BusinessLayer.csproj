@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
     <Folder Include="AutoMapper\Profiles\" />
     <Folder Include="Concrete\" />
     <Folder Include="Extensions\" />
