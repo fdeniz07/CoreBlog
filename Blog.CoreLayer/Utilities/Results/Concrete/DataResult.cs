@@ -4,7 +4,7 @@ using System;
 
 namespace Blog.CoreLayer.Utilities.Results.Concrete
 {
-    class DataResult<T> : IDataResult<T>
+    public class DataResult<T> : IDataResult<T>
     {
         public DataResult(ResultStatus resultStatus, T data)
         {
