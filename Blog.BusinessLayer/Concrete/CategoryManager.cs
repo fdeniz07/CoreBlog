@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Blog.BusinessLayer.Abstract;
+﻿using Blog.BusinessLayer.Abstract;
 using Blog.CoreLayer.Utilities.Results.Abstract;
 using Blog.CoreLayer.Utilities.Results.ComplexTypes;
 using Blog.CoreLayer.Utilities.Results.Concrete;
 using Blog.DataAccessLayer.Abstract.UnitOfWorks;
-using Blog.DataAccessLayer.Concrete.UnitOfWork;
 using Blog.EntityLayer.Concrete;
 using Blog.EntityLayer.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.BusinessLayer.Concrete
 {
-    public class CategoryManager:ICategoryService
+    public class CategoryManager : ICategoryService
     {
-
         private readonly IUnitOfWork _unitOfWork; //DI ile unitOfWork yapimizi enjekte ediyoruz
 
         public CategoryManager(IUnitOfWork unitOfWork)
@@ -30,7 +28,7 @@ namespace Blog.BusinessLayer.Concrete
         public async Task<IDataResult<Category>> GetAsync(int categoryId)
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId, c => c.Articles);
-            if (category!=null)
+            if (category != null)
             {
                 return new DataResult<Category>(ResultStatus.Success, category);
             }
@@ -48,21 +46,21 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<IList<Category>>> GetAllAsync()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(null,c=>c.Articles);
+            var categories = await _unitOfWork.Categories.GetAllAsync(null, c => c.Articles);
             if (categories.Count > -1) //Hic kategorisi de olmayabilir. O yüzden 0 yerine -1 yaziyoruz
             {
                 return new DataResult<IList<Category>>(ResultStatus.Success, categories);
             }
 
-            return new DataResult<IList<Category>>(ResultStatus.Error, "Hiç bir kategori bulunamadı.",null);
+            return new DataResult<IList<Category>>(ResultStatus.Error, "Hiç bir kategori bulunamadı.", null);
         }
 
 
         /////////////////////// GetAllByNonDeletedAsync \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public async  Task<IDataResult<IList<Category>>> GetAllByNonDeletedAsync() //Silinmemis olanlari getir
+        public async Task<IDataResult<IList<Category>>> GetAllByNonDeletedAsync() //Silinmemis olanlari getir
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted,c=>c.Articles);
+            var categories = await _unitOfWork.Categories.GetAllAsync(c => !c.IsDeleted, c => c.Articles);
             if (categories.Count > -1) //Hic kategorisi de olmayabilir. O yüzden 0 yerine -1 yaziyoruz
             {
                 return new DataResult<IList<Category>>(ResultStatus.Success, categories);
@@ -158,7 +156,7 @@ namespace Blog.BusinessLayer.Concrete
 
         /////////////////////// HardDeleteAsync \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public async  Task<IResult> HardDeleteAsync(int categoryId)
+        public async Task<IResult> HardDeleteAsync(int categoryId)
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
             if (category != null)
@@ -168,7 +166,7 @@ namespace Blog.BusinessLayer.Concrete
             }
             return new Result(ResultStatus.Error, "Hiç bir kategori bulunamadı.", null);
         }
-    
+
 
 
         /////////////////////// CountAsync \\\\\\\\\\\\\\\\\\\\\\\\\\\\

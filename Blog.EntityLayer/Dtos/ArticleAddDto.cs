@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Blog.CoreLayer.Entities.Abstract;
+using Blog.EntityLayer.Concrete;
 
-
-namespace Blog.EntityLayer.Concrete
+namespace Blog.EntityLayer.Dtos
 {
-    public class Article : EntityBase, IEntity
+    public class ArticleAddDto:IDto
     {
         public string Title { get; set; }
         public string Content { get; set; }
         public string Thumbnail { get; set; }
         public string Image { get; set; }
-        public DateTime Date  { get; set; }
-        public int ViewCount { get; set; } = 0; 
-        public int CommentCount { get; set; } = 0; //Baslangic degeri
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime Date { get; set; }
         public string SeoAuthor { get; set; }
         public string SeoDescription { get; set; }
         public string SeoTags { get; set; }
-      
+
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public int WriterId { get; set; }
-        public Writer Writer { get; set; }
-
-        public ICollection<Comment> Comments { get; set; } //Bir makale birden fazla yoruma sahip olabilir
+        public bool IsActive { get; set; }
     }
 }

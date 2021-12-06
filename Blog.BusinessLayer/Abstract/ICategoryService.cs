@@ -12,23 +12,35 @@ namespace Blog.BusinessLayer.Abstract
 
         //DTO : Data Transfer Object anlamina gelen, Frontend tarafinda kullanicinin ihtiyac duyacagi ilgili entity'lere ait property'leri tutar.
         Task<IDataResult<Category>> GetAsync(int categoryId);
+        
         Task<IDataResult<Category>> GetCategoryUpdateDtoAsync(int categoryId);
+        
         Task<IDataResult<IList<Category>>> GetAllAsync();
         //Task<IDataResult<Category>> GetAllAsync();
+       
         Task<IDataResult<IList<Category>>> GetAllByNonDeletedAsync();
         //Task<IDataResult<Category>> GetAllByNonDeletedAsync();
+        
         Task<IDataResult<Category>> GetAllByNonDeletedAndActiveAsync();
+        
         Task<IDataResult<Category>> GetAllByDeletedAsync(); //Tüm silinmis ögeleri getirme
+        
         //Task<IDataResult<Category>> AddAsync(Category category, string createdByName);
         Task<IResult> AddAsync(CategoryAddDto categoryAddDto, string createdByName);
+       
         //Task<IDataResult<Category>> UpdateAsync(Category category, string modifiedByName);
         Task<IResult> UpdateAsync(CategoryUpdateDto categoryUpdateDto, string modifiedByName);
         //Task<IDataResult<Category>> UpdateAsync(CategoryUpdateDto categoryUpdateDto, string modifiedByName);
+        
         Task<IResult> DeleteAsync(int categoryId, string modifiedByName); // Silme islemi sadece IsDeleted degerini true yapar
         //Task<IDataResult<Category>> DeleteAsync(int categoryId, string modifiedByName); // Silme islemi sadece IsDeleted degerini true yapar
+      
         Task<IDataResult<Category>> UndoDeleteAsync(int categoryId, string modifiedByName); // IsDeleted degeri true olanlari false yapar.
+       
         Task<IResult> HardDeleteAsync(int categoryId); // Degerleri Veritabanindan siler
+      
         Task<IDataResult<int>> CountAsync();
+      
         Task<IDataResult<int>> CountByNonDeletedAsync();
     }
 }
