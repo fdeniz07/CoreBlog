@@ -1,8 +1,5 @@
-﻿using System;
-using Blog.CoreLayer.Utilities.Results.Abstract;
-using Blog.EntityLayer.Concrete;
+﻿using Blog.CoreLayer.Utilities.Results.Abstract;
 using Blog.EntityLayer.Dtos;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.BusinessLayer.Abstract
@@ -14,9 +11,9 @@ namespace Blog.BusinessLayer.Abstract
         //DTO : Data Transfer Object anlamina gelen, Frontend tarafinda kullanicinin ihtiyac duyacagi ilgili entity'lere ait property'leri tutar.
         Task<IDataResult<ArticleDto>> GetAsync(int articleId);
        
-        Task<IDataResult<ArticleDto>> GetByIdAsync(int blogId, bool includeCategory, bool includeComments, bool includeUser);
+        Task<IDataResult<ArticleDto>> GetByIdAsync(int articleId, bool includeCategory, bool includeComments, bool includeWriter);
         
-        Task<IDataResult<ArticleListDto>> GetArticleUpdateDtoAsync(int articleId);
+        Task<IDataResult<ArticleUpdateDto>> GetArticleUpdateDtoAsync(int articleId);
       
         Task<IDataResult<ArticleListDto>> GetAllAsync();
         //Task<IDataResult<ArticleListDto>> GetAllAsync();
@@ -41,7 +38,7 @@ namespace Blog.BusinessLayer.Abstract
 
         Task<IDataResult<ArticleListDto>> SearchAsync(string keyword, int currentPage = 1, int pageSize = 6, bool isAscending = false);
 
-        Task<IResult> IncreaseViewCountAsync(int blogId);
+        Task<IResult> IncreaseViewCountAsync(int articleId);
 
         //Task<IDataResult<Article>> AddAsync(Category category, string createdByName);
         Task<IResult> AddAsync(ArticleAddDto articleAddDto, string createdByName);

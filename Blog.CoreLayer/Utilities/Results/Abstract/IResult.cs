@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Blog.CoreLayer.Entities.Concrete;
 using Blog.CoreLayer.Utilities.Results.ComplexTypes;
 
 namespace Blog.CoreLayer.Utilities.Results.Abstract
@@ -10,6 +12,6 @@ namespace Blog.CoreLayer.Utilities.Results.Abstract
         public string Message { get; }
         public Exception Exception { get; }
 
-        //public IEnumerable<ValidationError> ValidationErrors { get; set; } // ValidationErrors.Add --> Bu islem yapilamaz. Yani disaridan yenilemeyi IEnurable ile kapatiliyor.
+        public IEnumerable<ValidationError> ValidationErrors { get; set; } // ValidationErrors.Add --> Bu islem yapilamaz. Yani disaridan yenilemeyi IEnumerable ile kapatiliyor.
     }
 }

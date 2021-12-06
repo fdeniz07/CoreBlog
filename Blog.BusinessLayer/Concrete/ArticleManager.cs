@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using AutoMapper;
 using Blog.BusinessLayer.Abstract;
 using Blog.BusinessLayer.Utilities;
@@ -9,18 +11,16 @@ using Blog.DataAccessLayer.Abstract.UnitOfWorks;
 using Blog.EntityLayer.Concrete;
 using Blog.EntityLayer.Dtos;
 using System.Threading.Tasks;
+using Blog.CoreLayer.Entities.Concrete;
 
 namespace Blog.BusinessLayer.Concrete
 {
-    public class ArticleManager : IArticleService
+    public class ArticleManager : ManagerBase, IArticleService
     {
-        private readonly IUnitOfWork _unitOfWork; //DI ile unitOfWork yapimizi enjekte ediyoruz
-        private readonly IMapper _mapper;
 
-        public ArticleManager(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArticleManager(IUnitOfWork unitOfWork, IMapper mapper):base(unitOfWork,mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            
         }
 
         #region Implementation of IArticleService
@@ -29,7 +29,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleDto>> GetAsync(int articleId)
         {
-            var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId, a => a.Writer, a => a.Category);
+            var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId, a => a.Writer, a => a.Category);
             if (article != null)
             {
                 return new DataResult<ArticleDto>(ResultStatus.Success, new ArticleDto
@@ -44,17 +44,50 @@ namespace Blog.BusinessLayer.Concrete
 
         /////////////////////// GetByIdAsync \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public async Task<IDataResult<ArticleDto>> GetByIdAsync(int blogId, bool includeCategory, bool includeComments, bool includeUser)
+        public async Task<IDataResult<ArticleDto>> GetByIdAsync(int articleId, bool includeCategory, bool includeComments, bool includeWriter)
         {
-            throw new System.NotImplementedException();
+            List<Expression<Func<Article, bool>>> predicates = new List<Expression<Func<Article, bool>>>();
+            List<Expression<Func<Article, object>>> includes = new List<Expression<Func<Article, object>>>();
+
+            if (includeCategory) includes.Add(b => b.Category);
+            if (includeComments) includes.Add(b => b.Comments);
+            if (includeWriter) includes.Add(b => b.Writer);
+            predicates.Add(b => b.Id == articleId);
+            var article = await UnitOfWork.Articles.GetAsyncV2(predicates, includes);
+            if (article == null)
+            {
+                return new DataResult<ArticleDto>(ResultStatus.Warning, Messages.General.ValidationError(), null, new List<ValidationError>
+                {
+                    new ValidationError
+                    {
+                        PropertyName = "articleId",
+                        Message = Messages.Article.NotFoundById(articleId)
+                    }
+                });
+            }
+
+            return new DataResult<ArticleDto>(ResultStatus.Success, new ArticleDto
+            {
+                Article = article
+            });
         }
 
 
         /////////////////////// GetArticleUpdateDtoAsync \\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public Task<IDataResult<ArticleListDto>> GetArticleUpdateDtoAsync(int articleId)
+        public async Task<IDataResult<ArticleUpdateDto>> GetArticleUpdateDtoAsync(int articleId)
         {
-            throw new System.NotImplementedException();
+            var result = await UnitOfWork.Articles.AnyAsync(b => b.Id == articleId);
+            if (result)
+            {
+                var article = await UnitOfWork.Articles.GetAsync(b => b.Id == articleId);
+                var articleUpdateDto = Mapper.Map<ArticleUpdateDto>(article);
+                return new DataResult<ArticleUpdateDto>(ResultStatus.Success, articleUpdateDto);
+            }
+            else
+            {
+                return new DataResult<ArticleUpdateDto>(ResultStatus.Error, Messages.Article.NotFound(isPlural: false), null);
+            }
         }
 
 
@@ -62,7 +95,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllAsync()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(a => !a.IsDeleted, a => a.Writer, a => a.Category);
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => !a.IsDeleted, a => a.Writer, a => a.Category);
             //throw new SqlNullValueException(); // Global Excection Handling icin deneme yaptik
             if (articles.Count > -1)
             {
@@ -80,7 +113,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAsync()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(a => !a.IsDeleted, a => a.Writer, a => a.Category);
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => !a.IsDeleted, a => a.Writer, a => a.Category);
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -97,7 +130,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByNonDeletedAndActiveAsync()
         {
-            var articles = await _unitOfWork.Articles.GetAllAsync(a => !a.IsDeleted && a.IsActive, a => a.Writer, a => a.Category);
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => !a.IsDeleted && a.IsActive, a => a.Writer, a => a.Category);
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -114,10 +147,10 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByCategoryAsync(int categoryId)
         {
-            var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
+            var result = await UnitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
             {
-                var articles = await _unitOfWork.Articles.GetAllAsync(a => a.CategoryId == categoryId && !a.IsDeleted && a.IsActive, a => a.Writer, a => a.Category);
+                var articles = await UnitOfWork.Articles.GetAllAsync(a => a.CategoryId == categoryId && !a.IsDeleted && a.IsActive, a => a.Writer, a => a.Category);
                 if (articles.Count > -1)
                 {
                     return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
@@ -177,11 +210,12 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IResult> AddAsync(ArticleAddDto articleAddDto, string createdByName)
         {
-            var article = _mapper.Map<Article>(articleAddDto);
+            var article = Mapper.Map<Article>(articleAddDto);
             article.CreatedByName = createdByName;
             article.ModifiedByName = createdByName;
             article.WriterId = 1;
-            await _unitOfWork.Articles.AddAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            await UnitOfWork.Articles.AddAsync(article);
+            await UnitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, Messages.Article.Add(article.Title));
         }
 
@@ -190,9 +224,10 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IResult> UpdateAsync(ArticleUpdateDto articleUpdateDto, string modifiedByName)
         {
-            var article = _mapper.Map<Article>(articleUpdateDto);
+            var article = Mapper.Map<Article>(articleUpdateDto);
             article.ModifiedByName = modifiedByName;
-            await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+            await UnitOfWork.Articles.UpdateAsync(article);
+            await UnitOfWork.SaveAsync();
             return new Result(ResultStatus.Success, Messages.Article.Update(article.Title));
         }
 
@@ -201,14 +236,15 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IResult> DeleteAsync(int articleId, string modifiedByName)
         {
-            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            var result = await UnitOfWork.Articles.AnyAsync(a => a.Id == articleId);
             if (result)
             {
-                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
+                var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId);
                 article.IsDeleted = true;
                 article.ModifiedByName = modifiedByName;
                 article.ModifiedDate=DateTime.Now;
-                await _unitOfWork.Articles.UpdateAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                await UnitOfWork.Articles.UpdateAsync(article);
+                await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, Messages.Article.Delete(article.Title));
             }
             return new Result(ResultStatus.Error, Messages.Article.NotFound(isPlural:false));
@@ -219,16 +255,16 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IResult> UndoDeleteAsync(int articleId, string modifiedByName)
         {
-            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            var result = await UnitOfWork.Articles.AnyAsync(a => a.Id == articleId);
             if (result)
             {
-                var article = await _unitOfWork.Articles.GetAsync(b => b.Id == articleId);
+                var article = await UnitOfWork.Articles.GetAsync(b => b.Id == articleId);
                 article.IsDeleted = false;
                 article.IsActive = true;
                 article.ModifiedByName = modifiedByName;
                 article.ModifiedDate = DateTime.Now;
-                await _unitOfWork.Articles.UpdateAsync(article);
-                await _unitOfWork.SaveAsync();
+                await UnitOfWork.Articles.UpdateAsync(article);
+                await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, Messages.Article.UndoDelete(article.Title));
             }
             return new Result(ResultStatus.Error, Messages.Article.NotFound(isPlural: false));
@@ -239,11 +275,12 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IResult> HardDeleteAsync(int articleId)
         {
-            var result = await _unitOfWork.Articles.AnyAsync(a => a.Id == articleId);
+            var result = await UnitOfWork.Articles.AnyAsync(a => a.Id == articleId);
             if (result)
             {
-                var article = await _unitOfWork.Articles.GetAsync(a => a.Id == articleId);
-                await _unitOfWork.Articles.DeleteAsync(article).ContinueWith(t => _unitOfWork.SaveAsync());
+                var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId);
+                await UnitOfWork.Articles.DeleteAsync(article);
+                await UnitOfWork.SaveAsync();
                 return new Result(ResultStatus.Success, Messages.Article.HardDelete(article.Title));
             }
             return new Result(ResultStatus.Error, Messages.Article.NotFound(isPlural: false));

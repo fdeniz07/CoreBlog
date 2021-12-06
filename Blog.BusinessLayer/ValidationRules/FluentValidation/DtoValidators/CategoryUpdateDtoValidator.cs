@@ -27,6 +27,5 @@ namespace Blog.BusinessLayer.ValidationRules.FluentValidation
 
            RuleFor(x => x.IsDeleted).NotEmpty().WithName("Silindi Mi?").WithMessage("{PropertyName}" + _validatorMessages.NotEmpty);
        }
-    {
-    }
+   }
 }
