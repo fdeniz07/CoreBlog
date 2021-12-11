@@ -129,5 +129,44 @@
                 return $"{createdByName} tarafından eklenen yorum başarıyla veritabanından silinmiştir.";
             }
         }
+
+        public static class Writer // Buradaki Writer sinifi entity bölümünden farklidir
+        {
+            public static string NotFound(bool isPlural)
+            {
+                if (isPlural) return "Hiç bir yazar bulunamadı.";
+                return "Böyle bir yazar bulunamadı.";
+            }
+
+            public static string NotFoundById(int writerId)
+            {
+                return $"{writerId} yazar koduna ait bir kullanıcı bulunamadı.";
+            }
+
+            public static string Add(string writerName)
+            {
+                return $"{writerName} adlı yazar başarıyla eklenmiştir";
+            }
+
+            public static string Update(string writerName)
+            {
+                return $"{writerName} adlı yazar başarıyla güncellenmiştir.";
+            }
+
+            public static string Delete(string writerName)
+            {
+                return $"{writerName}  adlı yazar başarıyla silinmistir.";
+            }
+
+            public static string UndoDelete(string writerName)
+            {
+                return $"{writerName} adlı yazar başarıyla arşivden geri getirilmiştir.";
+            }
+
+            public static string HardDelete(string writerName)
+            {
+                return $"{writerName} adlı yazar veritabanindan başarıyla silinmiştir.";
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using Blog.BusinessLayer.Abstract;
@@ -29,7 +30,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleDto>> GetAsync(int articleId)
         {
-            var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId, a => a.Writer, a => a.Category);
+            var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId, a => a.Writer, a => a.Category,a=>a.Comments);
             if (article != null)
             {
                 return new DataResult<ArticleDto>(ResultStatus.Success, new ArticleDto
@@ -170,7 +171,16 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<ArticleListDto>> GetAllByDeletedAsync()
         {
-            throw new System.NotImplementedException();
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => a.IsDeleted, a => a.Writer, a => a.Category);
+            if (articles.Count > -1)
+            {
+                return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
+                {
+                    Articles = articles,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<ArticleListDto>(ResultStatus.Error, Messages.Article.NotFound(isPlural: true), null);
         }
 
 
@@ -178,7 +188,14 @@ namespace Blog.BusinessLayer.Concrete
 
         public async  Task<IDataResult<ArticleListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize)
         {
-            throw new System.NotImplementedException();
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => a.IsActive && !a.IsDeleted, a => a.Writer);
+            var sortedBlogs = isAscending
+                    ? articles.OrderBy(a => a.ViewCount) //dogruysa
+                    : articles.OrderByDescending(a => a.ViewCount); //yanlissa, Orderby default olarak ascending siralama yapar (azdan coka)
+            return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
+            {
+                Articles = takeSize == null ? sortedBlogs.ToList() : sortedBlogs.Take(takeSize.Value).ToList() //takeSize kontrolü yapiyoruz. Vermezsek, hepsi gelecek
+            });
         }
 
 

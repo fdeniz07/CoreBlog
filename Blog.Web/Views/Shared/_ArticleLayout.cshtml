@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="author" content="@ViewBag.Author">
+    <meta name="keywords" content="@ViewBag.Tags" />
+
+    <title>@ViewBag.Title | Fatih's Blog</title>
+
+    <script>
+        addEventListener("load",
+            function () {
+                setTimeout(hideURLbar, 0);
+            },
+            false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    @await Html.PartialAsync("_UserLayoutCssPartial")
+</head>
+<body>
+    <!--Header-->
+    <header>
+        <div class="top-bar_sub_w3layouts container-fluid">
+            <div class="row">
+                <div class="col-md-4 logo text-left">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <i class="fab fa-linode"></i> Fatih's Blog
+                    </a>
+                </div>
+                @await Html.PartialAsync("_UserLayoutHeaderLoginPartial")
+                <div class="col-md-4 log-icons text-right">
+                    <ul class="social_list1 mt-3">
+                        <li>
+                            <a href="#" class="facebook1 mx-2">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="twitter2 mx-2">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="youtube1 mx-2">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="linkedin6 mx-2">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="github1 mx-2">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <partial name="_UserLayoutNavbarPartial" />  @*@await Html.PartialAsync("_UserLayoutNavbarPartial")*@
+    </header>
+    <!--//header-->
+    <!--/banner-->
+    <!--//banner-->
+    <!--/main-->
+    <section class="main-content-w3layouts-agileits">
+        <div class="container">
+            <div class="row inner-sec">
+                <!--left-->
+                @RenderBody()
+                <!--//left-->
+                <!--right-->
+                @*@await Component.InvokeAsync("RightSideBar")*@  @* sag menüye newsletter abaoneligi sonra eklenecek*@
+                <!--//right-->
+            </div>
+        </div>
+    </section>
+    <!--//main-->
+    <!--footer-->
+    @await Html.PartialAsync("_UserLayoutFooterPartial")
+    <!---->
+    <a href="#home" class="scroll" id="toTop" style="display: block;">
+        <span id="toTopHover" style="opacity: 1;"> </span>
+    </a>
+
+    @await Html.PartialAsync("_UserLayoutJsPartial")
+    @await RenderSectionAsync("Scripts", false)  @*Buradaki false degerimizin amaci RenderSection'in' tüm sayfalarda bulunmasini engellemek *@
+</body>
+</html>

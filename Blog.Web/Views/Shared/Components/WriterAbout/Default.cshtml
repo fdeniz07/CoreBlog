@@ -1,0 +1,55 @@
+﻿@model ArticleDetailViewModel
+
+<div class="card" style="border-style: outset">
+    <h3 class="card-header text-center">Yazar Hakkında</h3>
+    <img src="~/CoreBlog/images/t1.jpg" class="card-img-top text-center image-thumbnail mt-1 mb-1" alt="@Model.ArticleDto.Article.Writer.UserName" />
+    <h5 class="card-header text-center">@Model.ArticleDto.Article.Writer.UserName</h5>
+    <div class="card-body">
+        <p class="card-text text-center">@Model.ArticleDto.Article.Writer.About</p>
+        <div class="card-footer text-center">
+            @*<div class="col-md-4 log-icons text-right">*@
+            <div class="social_list1">
+                @*<ul class="social_list1 mt-3">*@
+                <p>Sosyal Medya Linkleri</p>
+                <br />
+                <div class="row">
+                    @if (Model.ArticleDto.Article.Writer.LinkedInLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.LinkedInLink" class="linkedin6 mx-2"><span class="fab fa-linkedin"></span></a>
+                    }
+
+                    @if (Model.ArticleDto.Article.Writer.GitHubLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.GitHubLink" class="github1 mx-2"><span class="fab fa-github"></span></a>
+                    }
+
+                    @if (Model.ArticleDto.Article.Writer.TwitterLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.TwitterLink" class="twitter2 mx-2"><i class="fab fa-twitter"></i></a>
+                    }
+                    @if (Model.ArticleDto.Article.Writer.FacebookLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.FacebookLink" class="facebook1 mx-2"><i class="fab fa-facebook-f"></i></a>
+                    }
+
+                    @if (Model.ArticleDto.Article.Writer.YoutubeLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.YoutubeLink" class="youtube1 mx-2"><i class="fab fa-youtube"></i></a>
+                    }
+
+                    @if (Model.ArticleDto.Article.Writer.InstagramLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.InstagramLink" class="instagram1 mx-2"><i class="fab fa-instagram"></i></a>
+                    }
+
+                    @if (Model.ArticleDto.Article.Writer.WebsiteLink != null)
+                    {
+                        <a href="@Model.ArticleDto.Article.Writer.WebsiteLink" class="homepage1"><i class="fas fa-home"></i></a>
+                    }
+                </div>
+                @*</ul>*@
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+</div>

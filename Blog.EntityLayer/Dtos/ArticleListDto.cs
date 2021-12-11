@@ -7,6 +7,7 @@ namespace Blog.EntityLayer.Dtos
     public class ArticleListDto : DtoGetBase, IDto
     {
         public IList<Article> Articles { get; set; }
+        public int? CategoryId { get; set; }
 
     }
 }

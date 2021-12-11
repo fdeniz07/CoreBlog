@@ -16,6 +16,7 @@ namespace Blog.BusinessLayer.Extensions
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();
             serviceCollection.AddScoped<IArticleService,ArticleManager>();
             serviceCollection.AddScoped<ICommentService,CommentManager>(); // ICommentService istendiginde ona, CommentManager gönderecegiz.
+            serviceCollection.AddScoped<IWriterService, WriterManager>();
 
             #region Scope Nedir?
             /*

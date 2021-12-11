@@ -1,5 +1,6 @@
 using Blog.BusinessLayer.AutoMapper.Profiles;
 using Blog.BusinessLayer.Extensions;
+using Blog.Web.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +23,7 @@ namespace Blog.Web
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Sen bir MVC uygulamasisin. / RazorRuntimeCompilation ile bircok kodu derlemeden calistirabiliriz.
             services.LoadMyService();
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(CommentProfile)); //Derlenme sirasinda Automapper in buradaki siniflari taramasi saglaniyor.
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(CommentProfile),typeof(WriterProfile)); //Derlenme sirasinda Automapper in buradaki siniflari taramasi saglaniyor.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +65,7 @@ namespace Blog.Web
                 endpoints.MapControllerRoute(
                     name: "article",
                     pattern: "{title}/{articleId}", //"{categoryName}/{title}/{articleId}",
-                    defaults: new { controller = "Article", action = "Detail" }
+                    defaults: new { controller = "Article", action = "Index" }
                 );
 
                 endpoints.MapDefaultControllerRoute(); // Bu islem varsayilan olarak, sitemiz acildigindan default olarak HomeController ve Index kismina gider

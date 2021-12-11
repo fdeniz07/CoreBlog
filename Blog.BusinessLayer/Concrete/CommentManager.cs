@@ -171,7 +171,7 @@ namespace Blog.BusinessLayer.Concrete
 
         public async Task<IDataResult<CommentDto>> AddAsync(CommentAddDto commentAddDto)
         {
-            var article = await UnitOfWork.Articles.GetAsync(b => b.Id == commentAddDto.ArticleId);
+            var article = await UnitOfWork.Articles.GetAsync(a => a.Id == commentAddDto.ArticleId);
             if (article == null)
             {
                 return new DataResult<CommentDto>(ResultStatus.Error, Messages.Article.NotFound(isPlural: false), null);

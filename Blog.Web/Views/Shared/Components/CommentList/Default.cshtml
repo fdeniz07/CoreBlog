@@ -1,0 +1,35 @@
+﻿@model ArticleDetailViewModel
+<br />
+<h4>Yorumlar</h4>
+<div id="comments">
+    @if (Model.ArticleDto.Article.Comments.Count == 0)
+    {
+        <div class="comment-top">
+            <div class="media">
+                <div class="media-body">
+                    <h6>Bu bloğa ait bir yorum henüz yok. Bu bloğa ilk yorum yapan siz olun!</h6>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        @foreach (var comment in Model.ArticleDto.Article.Comments)
+        {
+            <div class="comment-top">
+                <div class="media">
+                    <img class="d-flex mr-3 rounded-circle" src="https://randomuser.me/api/portraits/men/34.jpg" alt="" /> @*"img-fluid"*@
+                    <div class="media-body">
+                        <h5 class="mt-0">
+                            <i class="far fa-user"></i> @comment.CreatedByName
+                        </h5>
+                        <i class="far fa-clock"></i> @comment.CreatedDate.Date.ToShortDateString()
+                        <br />
+                        <br />
+                        @comment.Content
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

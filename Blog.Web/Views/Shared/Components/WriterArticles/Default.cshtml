@@ -1,0 +1,27 @@
+﻿@model ArticleDetailViewModel
+
+<div class="card" style="border-style: outset">
+    <div class="tech-btm">
+        <h4 class="card-header text-center">@Model.WriterAboutModel.Header</h4>
+        @for (int i = 0; i < Model.WriterArticlesViewModel.Articles.Count; i++)
+        {
+            if (i % 2 == 0)
+            {
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary">
+        <a asp-controller="Article" asp-action="Detail" asp-route-categoryId="@Model.WriterArticlesViewModel.Articles[i].Id">@Model.WriterArticlesViewModel.Articles[i].Title - @Model.WriterArticlesViewModel.Articles[i].Date.ToShortDateString()</a>
+
+        @*<a href="/@Url.FriendlyUrlHelper(@Model.ArticleListDto.Articles[i].Title)/@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>*@
+        @*<i class="far fa-clock"></i> @Model.WriterArticlesViewModel..Articles[i].Date.ToShortDateString()
+        <span class="badge-pill fas fa-eye"></span>@Model.WriterArticlesViewModel..Articles[i].ViewCount*@
+    </li>
+            }
+            else
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                    <a asp-controller="Article" asp-action="Detail" asp-route-categoryId="@Model.WriterArticlesViewModel.Articles[i].Id">@Model.WriterArticlesViewModel.Articles[i].Title - @Model.WriterArticlesViewModel.Articles[i].Date.ToShortDateString()</a>
+                    @*<a href="/@Url.FriendlyUrlHelper(@Model.ArticleListDto.Articles[i].Title)/@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>*@
+                </li>
+            }
+        }
+    </div>
+</div>

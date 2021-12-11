@@ -1,0 +1,200 @@
+﻿@model ArticleDetailRightSideBarViewModel
+<div class="col-md-4">
+    <!--right-->
+    <div class="tech-btm">
+        <img src="~/CoreBlog/images/banner1.jpg" class="card-img-top img-fluid" alt="">
+    </div>
+    <div class="tech-btm">
+        <h4>Bültene Abone Ol</h4>
+        <p>Mail adresinizi girerek yeniliklerden abone olabilirsiniz</p>
+        <form action="#" method="post">
+            <input type="email" placeholder="Email" required="">
+            <input type="submit" value="Abone Ol">
+        </form>
+    </div>
+    <!--Writer About-->
+    <div class="card" style="border-style: outset">
+        <h3 class="card-header text-center">Yazar Hakkında</h3>
+        <img src="~/CoreBlog/images/t1.jpg" class="card-img-top text-center image-thumbnail mt-1 mb-1" alt="@Model.Writer.UserName" />
+        <h5 class="card-header text-center">@Model.Writer.UserName</h5>
+        <div class="card-body">
+            <p class="card-text text-center">@Model.Writer.About</p>
+            <div class="card-footer text-center">
+                @*<div class="col-md-4 log-icons text-right">*@
+                <div class="social_list1">
+                    @*<ul class="social_list1 mt-3">*@
+                    <p>Sosyal Medya Linkleri</p>
+                    <br />
+                    <div class="row">
+                        @if (Model.Writer.LinkedInLink != null)
+                        {
+                            <a href="@Model.Writer.LinkedInLink" class="linkedin6 mx-2"><span class="fab fa-linkedin"></span></a>
+                        }
+
+                        @if (Model.Writer.GitHubLink != null)
+                        {
+                            <a href="@Model.Writer.GitHubLink" class="github1 mx-2"><span class="fab fa-github"></span></a>
+                        }
+
+                        @if (Model.Writer.TwitterLink != null)
+                        {
+                            <a href="@Model.Writer.TwitterLink" class="twitter2 mx-2"><i class="fab fa-twitter"></i></a>
+                        }
+                        @if (Model.Writer.FacebookLink != null)
+                        {
+                            <a href="@Model.Writer.FacebookLink" class="facebook1 mx-2"><i class="fab fa-facebook-f"></i></a>
+                        }
+
+                        @if (Model.Writer.YoutubeLink != null)
+                        {
+                            <a href="@Model.Writer.YoutubeLink" class="youtube1 mx-2"><i class="fab fa-youtube"></i></a>
+                        }
+
+                        @if (Model.Writer.InstagramLink != null)
+                        {
+                            <a href="@Model.Writer.InstagramLink" class="instagram1 mx-2"><i class="fab fa-instagram"></i></a>
+                        }
+
+                        @if (Model.Writer.WebsiteLink != null)
+                        {
+                            <a href="@Model.Writer.WebsiteLink" class="homepage1"><i class="fas fa-home"></i></a>
+                        }
+                    </div>
+                    @*</ul>*@
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+    <br />
+    <!--// Writer About-->
+    <!--Writer Blogs-->
+    <div class="card" style="border-style: outset">
+        <div class="tech-btm">
+            <h4 class="card-header text-center">@Model.Header</h4>
+            @for (int i = 0; i < Model.ArticleListDto.Articles.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+        <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary">
+            <a asp-controller="Article" asp-action="Detail" asp-route-categoryId="@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>
+
+            @*<a href="/@Url.FriendlyUrlHelper(@Model.ArticleListDto.Articles[i].Title)/@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>*@
+            <i class="far fa-clock"></i> @Model.ArticleListDto.Articles[i].Date.ToShortDateString()
+            <span class="badge-pill fas fa-eye"></span>@Model.ArticleListDto.Articles[i].ViewCount
+        </li>
+                }
+                else
+                {
+        <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+            <a asp-controller="Article" asp-action="Detail" asp-route-categoryId="@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>
+            @*<a href="/@Url.FriendlyUrlHelper(@Model.ArticleListDto.Articles[i].Title)/@Model.ArticleListDto.Articles[i].Id">@Model.ArticleListDto.Articles[i].Title - @Model.ArticleListDto.Articles[i].Date.ToShortDateString()</a>*@
+        </li>
+                }
+            }
+        </div>
+    </div>
+    <!--// Writer Blogs-->
+    <br />
+    <div class="single-gd tech-btm text-left">
+        <h4>Son Makale</h4>
+        <div class="card" style="border-style: outset">
+            <div class="blog-grids">
+                <div class="blog-grid-left">
+                    <a href="single.html">
+                        <img src="~/CoreBlog/images/b1.jpg" class="card-img-top img-fluid" alt="">
+                    </a>
+                </div>
+                <div class="blog-grid-right">
+                    <h5>
+                        <a href="single.html">Pellentesque dui, non felis. Maecenas male</a>
+                    </h5>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <div class="tech-btm widget_social text-left">
+        <h4>Sosyal Medya</h4>
+        <ul>
+            <li>
+                <a class="twitter" href="#">
+                    <i class="fab fa-twitter"></i><span class="count">317K</span> Twitter Followers
+                </a>
+            </li>
+            <li>
+                <a class="facebook" href="#">
+                    <i class="fab fa-facebook-f"></i><span class="count">218k</span> Twitter Followers
+                </a>
+            </li>
+            <li>
+                <a class="dribble" href="#">
+                    <i class="fab fa-dribbble"></i><span class="count">215k</span> Dribble Followers
+                </a>
+            </li>
+            <li>
+                <a class="pin" href="#">
+                    <i class="fab fa-pinterest"></i><span class="count">190k</span> Pinterest Followers
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tech-btm">
+        <h4>Son Makaleler</h4>
+        <div class="blog-grids row mb-3 text-left">
+            <div class="col-md-5 blog-grid-left">
+                <a href="single.html">
+                    <img src="~/CoreBlog/images/1.jpg" class="card-img-top img-fluid" alt="">
+                </a>
+            </div>
+            <div class="col-md-7 blog-grid-right">
+
+                <h5>
+                    <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
+                </h5>
+                <div class="sub-meta">
+                    <span>
+                        <i class="far fa-clock"></i> 20 Jan, 2018
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="blog-grids row mb-3 text-left">
+            <div class="col-md-5 blog-grid-left">
+                <a href="single.html">
+                    <img src="~/CoreBlog/images/5.jpg" class="card-img-top img-fluid" alt="">
+                </a>
+            </div>
+            <div class="col-md-7 blog-grid-right">
+
+                <h5>
+                    <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
+                </h5>
+                <div class="sub-meta">
+                    <span>
+                        <i class="far fa-clock"></i> 20 Jan, 2018
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="blog-grids row mb-3 text-left">
+            <div class="col-md-5 blog-grid-left">
+                <a href="single.html">
+                    <img src="~/CoreBlog/images/3.jpg" class="card-img-top img-fluid" alt="">
+                </a>
+            </div>
+            <div class="col-md-7 blog-grid-right">
+                <h5>
+                    <a href="single.html">Pellentesque dui, non felis. Maecenas male non felis </a>
+                </h5>
+                <div class="sub-meta">
+                    <span>
+                        <i class="far fa-clock"></i> 20 Feb, 2018
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//right-->
+</div>
