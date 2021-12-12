@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using Blog.BusinessLayer.Abstract;
+﻿using Blog.BusinessLayer.Abstract;
 using Blog.CoreLayer.Utilities.Results.ComplexTypes;
+using Blog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Blog.EntityLayer.Concrete;
-using Blog.EntityLayer.Dtos;
-using Blog.Web.Models;
 
 namespace Blog.Web.Controllers
 {
@@ -13,64 +10,38 @@ namespace Blog.Web.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly ICategoryService _categoryService;
-        private readonly ICommentService _commentService;
-        private readonly IWriterService _writerService;
 
-
-        public ArticleController(IArticleService articleService, ICategoryService categoryService, ICommentService commentService, IWriterService writerService)
+        public ArticleController(IArticleService articleService, ICategoryService categoryService)
         {
             _articleService = articleService;
             _categoryService = categoryService;
-            _commentService = commentService;
-            _writerService = writerService;
         }
 
         public async Task<IActionResult> Detail(int articleId,int writerId)
         {
             var articleResult = await _articleService.GetAsync(articleId);
-            var articlesResult = await _articleService.GetAllByViewCountAsync(isAscending: false, takeSize: 5); // Azalan bir sekilde 5 makale gelecek
-            var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync();
-            var commentsResult = await _commentService.GetAllAsync();
-            var writerResult = await _writerService.GetAsync(writerId); 
-            //if (articleResult.ResultStatus == ResultStatus.Success)
-            //{
-            //    return View(new ArticleDetailViewModel
-            //    {
-            //        ArticleDto = articleResult.Data,
-            //        ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel
-            //        {
-            //            Writer = articleResult.Data.Article.Writer
-            //        }
-            //    });
-            //}
-            //return NotFound();
+            var articleResults = await _articleService.GetAllByViewCountAsync(isAscending: false, takeSize: 5); // Azalan bir sekilde yazarin 5 makalesi gelecek
+            var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync(); // Silmemis ve Aktif olan kategoriler
 
             if (articleResult.ResultStatus == ResultStatus.Success)
             {
-                //ArticleDetailVewModel
                 return View(new ArticleDetailViewModel
                 {
                     ArticleDto = articleResult.Data,
-                    //ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel
-                    //{
-                    //    Writer = articleResult.Data.Article.Writer
-                    //},
                     WriterAboutModel = new WriterAboutModel
                     {
                         Writer = articleResult.Data.Article.Writer,
                         Header = ""
                     },
-                    //ArticleListDto = new ArticleListDto()
                     WriterArticlesViewModel = new WriterArticlesViewModel
                     {
-                        Articles = articlesResult.Data.Articles,
+                        Articles = articleResults.Data.Articles,
                         Categories = categoriesResult.Data.Categories
-                    }
+                    },
+                    CategoryListDto = categoriesResult.Data
                 });
             }
-
             return NotFound();
-
         }
     }
 }

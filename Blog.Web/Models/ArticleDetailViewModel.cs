@@ -8,7 +8,6 @@ namespace Blog.Web.Models
         public WriterAboutModel WriterAboutModel { get; set; }
         public ArticleListDto ArticleListDto { get; set; }
         public WriterArticlesViewModel WriterArticlesViewModel { get; set; }
+        public CategoryListDto CategoryListDto { get; set; }
     }
 }
-
-//public ArticleDetailRightSideBarViewModel ArticleDetailRightSideBarViewModel { get; set; }

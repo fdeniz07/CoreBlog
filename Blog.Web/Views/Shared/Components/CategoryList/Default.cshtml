@@ -1,1 +1,19 @@
-﻿
+﻿@model ArticleDetailViewModel
+
+<div class="tech-btm">
+    <h4>Kategoriler</h4>
+    <ul class="list-group single">
+        <a asp-controller="Home" asp-action="Index" class="nav-link collapsed" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a asp-controller="Home" asp-action="Index">Tüm Kategoriler</a>
+        </li>
+        </a>
+        @foreach (var category in Model.CategoryListDto.Categories)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+                        <span class="badge badge-primary badge-pill">1</span>
+            </li>
+        }
+    </ul>
+</div>
