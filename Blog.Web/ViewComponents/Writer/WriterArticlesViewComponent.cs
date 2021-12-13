@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using Blog.BusinessLayer.Abstract;
-using Blog.Web.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Blog.Web.ViewComponents.Writer
 {

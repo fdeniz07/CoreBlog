@@ -140,7 +140,7 @@
 
             public static string NotFoundById(int writerId)
             {
-                return $"{writerId} yazar koduna ait bir kullanıcı bulunamadı.";
+                return $"{writerId} yazar koduna ait bir yazar bulunamadı.";
             }
 
             public static string Add(string writerName)

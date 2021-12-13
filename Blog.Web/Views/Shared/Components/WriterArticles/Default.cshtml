@@ -3,7 +3,7 @@
 <div class="card" style="border-style: outset">
     <h3 class="card-header text-center">Yazarın En Popüler Makaleleri</h3>
     <div class="tech-btm">
-        <h4 class="card-header text-center">@Model.WriterAboutModel.Header</h4>
+        <h4 class="card-header text-center">@Model.WriterArticlesViewModel.Header</h4>
         @for (int i = 0; i < Model.WriterArticlesViewModel.Articles.Count; i++)
         {
             if (i % 2 == 0)

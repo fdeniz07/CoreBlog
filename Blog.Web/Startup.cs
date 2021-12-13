@@ -23,7 +23,7 @@ namespace Blog.Web
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation(); // Sen bir MVC uygulamasisin. / RazorRuntimeCompilation ile bircok kodu derlemeden calistirabiliriz.
             services.LoadMyService();
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(CommentProfile),typeof(WriterProfile)); //Derlenme sirasinda Automapper in buradaki siniflari taramasi saglaniyor.
+            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(CommentProfile), typeof(WriterProfile)); //Derlenme sirasinda Automapper in buradaki siniflari taramasi saglaniyor.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

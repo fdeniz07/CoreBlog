@@ -28,15 +28,11 @@ namespace Blog.Web.Controllers
                 return View(new ArticleDetailViewModel
                 {
                     ArticleDto = articleResult.Data,
-                    WriterAboutModel = new WriterAboutModel
-                    {
-                        Writer = articleResult.Data.Article.Writer,
-                        Header = ""
-                    },
                     WriterArticlesViewModel = new WriterArticlesViewModel
                     {
                         Articles = articleResults.Data.Articles,
-                        Categories = categoriesResult.Data.Categories
+                        Categories = categoriesResult.Data.Categories,
+                        Header = ""
                     },
                     CategoryListDto = categoriesResult.Data
                 });

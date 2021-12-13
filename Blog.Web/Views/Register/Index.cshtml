@@ -1,0 +1,75 @@
+﻿@using Blog.EntityLayer.Dtos
+@model WriterAddDto
+@{
+    //ViewData["Title"] = "Index";
+    Layout = "_UserLayout";
+    ViewBag.Title = "Kayıt Ol";
+    ViewBag.Description = "Yeni Yazar Kaydı";
+    ViewBag.Tags = "Register, New Author, Yeni Kayıt, Kayıt Ol";
+    ViewBag.Author = "Fatih's Blog";
+}
+<section class="main-content-w3layouts-agileits">
+    <div class="container">
+        <h3 class="tittle">Kayıt Ol</h3>
+        <div class="inner-sec">
+            <div class="login p-5 bg-light mx-auto mw-100">
+                <form action="#" method="post">
+                    @*<div class="form-row">*@
+                        <div class="form-group">
+                            <label class="small mb-1" for="layoutAuthentication">Yazar Kullanıcı Adı</label>
+                            <input class="form-control py-4" @*id="inputEmailAddress"*@ type="text" placeholder="Kullanıcı Adınızı giriniz" asp-for="UserName" />
+                            <span class="text-danger" asp-validation-for="UserName"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputEmailAddress">E-Posta Adresi</label>
+                            <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="E-Posta Adresinizi giriniz" asp-for="Email" />
+                            <span class="text-danger" asp-validation-for="Email"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom01">First name</label>
+                                <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Isminizi giriniz" asp-for="FirstName" />
+                                @*<input type="text" class="form-control" id="validationDefault01" placeholder="" required="">*@
+                                <span class="text-danger" asp-validation-for="FirstName"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom02">Last name</label>
+                                <input class="form-control py-4" id="inputLastName" type="text" placeholder="Soyisminizi giriniz" asp-for="LastName" />
+                                @*<input type="text" class="form-control" id="validationDefault02" placeholder="" required="">*@
+                                <span class="text-danger" asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
+                    @*</div>*@
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword1 mb-2">Şifre</label>
+                            @*<input type="password" class="form-control" id="password1" placeholder="" required="">*@
+                            <input class="form-control py-4" id="inputPassword" type="password" placeholder="Şifrenizi giriniz" asp-for="Password" />
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="exampleInputPassword2 mb-2">Şifre Tekrarı</label>
+                            @*<input type="password" class="form-control" id="password2" placeholder="" required="">*@
+                            <input class="form-control py-4" id="inputConfirmPassword" type="password" placeholder="Şifrenizi tekrar giriniz" asp-for="Password" />
+                            <span class="text-danger" asp-validation-for="Password"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="ImageFile"></label>
+                            <input type="file" accept="image/*" class="form-control-file" asp-for="ImageFile" placeholder="Lütfen, resim seçiniz." />
+                            <span class="text-danger" asp-validation-for="ImageFile"></span>
+                        </div>
+                    </div>
+                    @*<button type="submit" class="btn btn-primary submit mb-4">Register</button>*@
+                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><span class="fas fa-times"></span> İptal</button>
+                    <button type="button" class="btn btn-primary btn-block" id="btnSave"><span class="fas fa-save"></span> Kaydet</button>
+                    <br />
+                    <p>
+                        @* <a href="#">By clicking Signup, I agree to your terms</a>*@
+                        <div class="small"><a href="login.html">Bir hesabın var mı? Giriş Yap</a></div>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+

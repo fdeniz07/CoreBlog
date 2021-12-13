@@ -10,7 +10,7 @@ namespace Blog.Web.AutoMapper.Profiles
         {
             CreateMap<WriterAddDto, Writer>();
 
-            CreateMap<Writer, WriterUpdateDto>().ReverseMap();
+            CreateMap<Writer, WriterUpdateDto>().ReverseMap(); // ReverseMap metodu ayni islemin tersini de yapmaktadir. (WriterUpdateDto --> Writer)
         }
     }
 }

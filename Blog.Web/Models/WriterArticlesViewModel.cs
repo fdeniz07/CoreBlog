@@ -7,6 +7,7 @@ namespace Blog.Web.Models
     {
         public IList<Category> Categories { get; set; }
         public IList<Article> Articles { get; set; }
+        public string Header { get; set; }
     }
 }
  
