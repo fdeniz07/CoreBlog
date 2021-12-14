@@ -1,5 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Blog.BusinessLayer.Abstract;
+using Blog.EntityLayer.Concrete;
+using Blog.EntityLayer.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Web.Controllers
@@ -15,12 +18,18 @@ namespace Blog.Web.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            if (ModelState.IsValid)
-            {
-                
-            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(WriterAddDto writerAddDto)
+        {
+            var writer = _mapper.Map<Writer>(writerAddDto);
+            var result = await _writerService.AddAsync(writerAddDto);
+
             return View();
         }
     }
